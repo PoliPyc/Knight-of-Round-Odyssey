@@ -1,21 +1,26 @@
 {
     "activeFile": "overworld.tmx",
     "expandedProjectPaths": [
+        "."
     ],
+    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "": {
+            "scaleInEditor": 1
+        },
         "overworld.tmx": {
-            "scale": 2,
+            "scale": 2.7017,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 71.5,
-                "y": 174.75
+                "x": 142.87300588518337,
+                "y": 53.854980197653305
             }
         },
         "overworld.tmx#Overworld Tiles": {
-            "scaleInDock": 1
+            "scaleInDock": 2
         },
         "overworld.tmx#Sprites": {
-            "scaleInDock": 1
+            "scaleInDock": 3
         }
     },
     "openFiles": [
