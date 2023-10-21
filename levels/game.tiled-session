@@ -10,13 +10,14 @@
         },
         "overworld.tmx": {
             "scale": 2.7017,
-            "selectedLayer": 0,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 142.87300588518337,
-                "y": 53.854980197653305
+                "x": 141.76259392234516,
+                "y": 53.11470555576116
             }
         },
         "overworld.tmx#Overworld Tiles": {
+            "dynamicWrapping": false,
             "scaleInDock": 2
         },
         "overworld.tmx#Sprites": {
