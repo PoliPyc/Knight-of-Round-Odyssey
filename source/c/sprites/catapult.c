@@ -1,0 +1,16 @@
+#include "source/c/neslib.h"
+#include "source/c/sprites/catapult.h"
+#include "source/c/library/bank_helpers.h"
+#include "source/c/globals.h"
+#include "source/c/map/map.h"
+#include "source/c/configuration/game_states.h"
+#include "source/c/configuration/system_constants.h"
+#include "source/c/sprites/collision.h"
+#include "source/c/sprites/sprite_definitions.h"
+#include "source/c/sprites/map_sprites.h"
+#include "source/c/menus/error.h"
+#include "source/c/graphics/hud.h"
+#include "source/c/graphics/game_text.h"
+#include "source/c/sprites/map_sprites.h"
+
+CODE_BANK(PRG_BANK_CATAPULT_SPRITE);

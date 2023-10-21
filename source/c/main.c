@@ -16,6 +16,7 @@ This has the main loop for the game, which is then used to call out to other cod
 #include "source/c/graphics/hud.h"
 #include "source/c/graphics/fade_animation.h"
 #include "source/c/sprites/player.h"
+#include "source/c/sprites/catapult.h"
 #include "source/c/menus/pause.h"
 #include "source/c/sprites/map_sprites.h"
 #include "source/c/sprites/sprite_definitions.h"
@@ -84,18 +85,21 @@ void main(void) {
                 // Map drawing is complete; let the player play the game!
                 music_play(SONG_OVERWORLD);
                 fade_in();
-                gameState = GAME_STATE_RUNNING;
+                gameState = GAME_STATE_BISHOP;
                 break;
 
-            case GAME_STATE_RUNNING:
+            case GAME_STATE_BISHOP:
                 // TODO: Might be nice to have this only called when we have something to update, and maybe only update the piece we 
                 // care about. (For example, if you get a key, update the key count; not everything!
-                banked_call(PRG_BANK_HUD, update_hud);
+                // banked_call(PRG_BANK_HUD, update_hud);
                 banked_call(PRG_BANK_PLAYER_SPRITE, prepare_player_movement);
                 banked_call(PRG_BANK_MAP_SPRITES, update_map_sprites);
                 banked_call(PRG_BANK_PLAYER_SPRITE, do_player_movement);
 
                 banked_call(PRG_BANK_PLAYER_SPRITE, update_player_sprite);
+                break;
+            case GAME_STATE_CATAPULT:
+                banked_call(PRG_BANK_PLAYER_SPRITE, prepare_player_movement);
                 break;
             case GAME_STATE_SCREEN_SCROLL:
                 // Hide all non-player sprites in play, so we have an empty screen to add new ones to
@@ -106,7 +110,7 @@ void main(void) {
                 break;
             case GAME_STATE_SHOWING_TEXT:
                 banked_call(PRG_BANK_GAME_TEXT, draw_game_text);
-                gameState = GAME_STATE_RUNNING;
+                gameState = GAME_STATE_BISHOP;
                 break;
             case GAME_STATE_PAUSED:
                 fade_out();

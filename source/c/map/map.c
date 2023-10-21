@@ -524,7 +524,7 @@ void do_fade_screen_transition(void) {
     banked_call(PRG_BANK_MAP_SPRITES, update_map_sprites);
     fade_in_fast();
     // Aand we're back!
-    gameState = GAME_STATE_RUNNING;
+    gameState = GAME_STATE_BISHOP;
 }
 
 // Use a scrolling animation to move the player to the next screen.
@@ -707,6 +707,6 @@ void do_scroll_screen_transition(void) {
     oam_spr(SPRITE_OFFSCREEN, SPRITE_OFFSCREEN, HUD_SPRITE_ZERO_TILE_ID, 0x00, 0);
 
     xScrollPosition = -1;
-    gameState = GAME_STATE_RUNNING;
+    gameState = GAME_STATE_BISHOP;
 
 }

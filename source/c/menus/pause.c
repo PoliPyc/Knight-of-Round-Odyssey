@@ -34,5 +34,5 @@ void draw_pause_screen(void) {
 
 void handle_pause_input(void) {
     banked_call(PRG_BANK_MENU_INPUT_HELPERS, wait_for_start);
-    gameState = GAME_STATE_RUNNING;
+    gameState = GAME_STATE_BISHOP;
 }
