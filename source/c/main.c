@@ -15,6 +15,7 @@ This has the main loop for the game, which is then used to call out to other cod
 #include "source/c/graphics/game_text.h"
 #include "source/c/graphics/hud.h"
 #include "source/c/graphics/fade_animation.h"
+#include "source/c/sprites/playable_sprites.h"
 #include "source/c/sprites/player.h"
 #include "source/c/sprites/catapult.h"
 #include "source/c/menus/pause.h"
@@ -99,7 +100,7 @@ void main(void) {
                 banked_call(PRG_BANK_PLAYER_SPRITE, update_player_sprite);
                 break;
             case GAME_STATE_CATAPULT:
-                banked_call(PRG_BANK_PLAYER_SPRITE, prepare_player_movement);
+                banked_call(PRG_BANK_PLAYER_SPRITE, prepare_catapult_movement);
                 break;
             case GAME_STATE_SCREEN_SCROLL:
                 // Hide all non-player sprites in play, so we have an empty screen to add new ones to

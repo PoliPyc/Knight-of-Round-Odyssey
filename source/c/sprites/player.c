@@ -1,4 +1,5 @@
 #include "source/c/neslib.h"
+#include "source/c/sprites/playable_sprites.h"
 #include "source/c/sprites/player.h"
 #include "source/c/library/bank_helpers.h"
 #include "source/c/globals.h"
@@ -14,17 +15,6 @@
 #include "source/c/sprites/map_sprites.h"
 
 CODE_BANK(PRG_BANK_PLAYER_SPRITE);
-
-// Some useful global variables
-ZEROPAGE_DEF(int, playerXPosition);
-ZEROPAGE_DEF(int, playerYPosition);
-ZEROPAGE_DEF(int, playerXVelocity);
-ZEROPAGE_DEF(int, playerYVelocity);
-ZEROPAGE_DEF(int, nextPlayerXPosition);
-ZEROPAGE_DEF(int, nextPlayerYPosition);
-ZEROPAGE_DEF(unsigned char, playerControlsLockTime);
-ZEROPAGE_DEF(unsigned char, playerInvulnerabilityTime);
-ZEROPAGE_DEF(unsigned char, playerDirection);
 
 // Huge pile of temporary variables
 #define rawXPosition tempChar1
@@ -96,6 +86,10 @@ void prepare_player_movement(void) {
     // If Start is pressed now, and was not pressed before...
     if (controllerState & PAD_START && !(lastControllerState & PAD_START)) {
         gameState = GAME_STATE_PAUSED;
+        return;
+    }
+    if (controllerState & PAD_SELECT) {
+        gameState = GAME_STATE_CATAPULT;
         return;
     }
     if (playerControlsLockTime) {

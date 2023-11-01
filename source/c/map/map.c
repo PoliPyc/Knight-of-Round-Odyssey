@@ -8,6 +8,7 @@
 #include "graphics/palettes/palettes.config.h"
 #include "source/c/graphics/hud.h"
 #include "source/c/graphics/fade_animation.h"
+#include "source/c/sprites/playable_sprites.h"
 #include "source/c/sprites/player.h"
 #include "source/c/sprites/sprite_definitions.h"
 #include "source/c/sprites/map_sprites.h"

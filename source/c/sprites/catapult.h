@@ -48,23 +48,15 @@
 // If the player is invulnerable, how quickly to we blink the sprite? In sprite mask form, so one of 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80
 #define PLAYER_INVULNERABILITY_BLINK_MASK 0x02
 
-// ZEROPAGE_EXTERN(int, playerXPosition);
-// ZEROPAGE_EXTERN(int, playerYPosition);
-// ZEROPAGE_EXTERN(int, playerXVelocity);
-// ZEROPAGE_EXTERN(int, playerYVelocity);
-// ZEROPAGE_EXTERN(int, nextPlayerXPosition);
-// ZEROPAGE_EXTERN(int, nextPlayerYPosition);
-// ZEROPAGE_EXTERN(unsigned char, playerDirection);
-
 // Helper macro to convert the player's X and Y position into a position on the map
 // #define PLAYER_MAP_POSITION(xPos, yPos) (xPos>>4) + (yPos & 0xf0)
 
 // Move variables for the player around, 
 // and otherwise deal with controller input. (NOTE: Pause/etc are handled here too)
-void prepare_player_movement(void);
+void prepare_catapult_movement(void);
 
 // Take the updated variables and re-apply them to the player, after any adjustments are made.
-void do_player_movement(void);
+void do_catapult_movement(void);
 
 // Update the player's sprite, and put it onto the screen as necessary
 void update_player_sprite(void);

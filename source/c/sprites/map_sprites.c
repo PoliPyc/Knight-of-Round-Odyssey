@@ -1,6 +1,7 @@
 #include "source/c/neslib.h"
 #include "source/c/globals.h"
 #include "source/c/configuration/system_constants.h"
+#include "source/c/sprites/playable_sprites.h"
 #include "source/c/sprites/map_sprites.h"
 #include "source/c/sprites/player.h"
 #include "source/c/sprites/sprite_definitions.h"
