@@ -100,7 +100,8 @@ void main(void) {
                 banked_call(PRG_BANK_PLAYER_SPRITE, update_player_sprite);
                 break;
             case GAME_STATE_CATAPULT:
-                banked_call(PRG_BANK_PLAYER_SPRITE, prepare_catapult_movement);
+                // crash_error("Zmiana na katapulte", "nom", NULL, NULL);
+                banked_call(PRG_BANK_CATAPULT_SPRITE, prepare_catapult_movement);
                 break;
             case GAME_STATE_SCREEN_SCROLL:
                 // Hide all non-player sprites in play, so we have an empty screen to add new ones to

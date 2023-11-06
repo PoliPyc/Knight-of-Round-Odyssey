@@ -88,7 +88,7 @@ void prepare_player_movement(void) {
         gameState = GAME_STATE_PAUSED;
         return;
     }
-    if (controllerState & PAD_SELECT) {
+    if (controllerState & PAD_SELECT && !(lastControllerState & PAD_START)) {
         gameState = GAME_STATE_CATAPULT;
         return;
     }

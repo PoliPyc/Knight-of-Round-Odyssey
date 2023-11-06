@@ -32,7 +32,7 @@ void prepare_catapult_movement(void) {
         gameState = GAME_STATE_PAUSED;
         return;
     }
-    if (controllerState & PAD_SELECT) {
+    if (controllerState & PAD_SELECT && !(lastControllerState & PAD_START)) {
         gameState = GAME_STATE_BISHOP;
         return;
     }
