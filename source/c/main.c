@@ -32,6 +32,7 @@ void initialize_variables(void) {
     playerOverworldPosition = 0; // Which tile on the overworld to start with; 0-62
     playerHealth = 5; // Player's starting health - how many hearts to show on the HUD.
     playerMaxHealth = 5; // Player's max health - how many hearts to let the player collect before it doesn't count.
+    catapultXPosition = (64 << PLAYER_POSITION_SHIFT);
     playerXPosition = (128 << PLAYER_POSITION_SHIFT); // X position on the screen to start (increasing numbers as you go left to right. Just change the number)
     playerYPosition = (208 << PLAYER_POSITION_SHIFT); // Y position on the screen to start (increasing numbers as you go top to bottom. Just change the number)
     playerDirection = SPRITE_DIRECTION_DOWN; // What direction to have the player face to start.
@@ -102,6 +103,8 @@ void main(void) {
             case GAME_STATE_CATAPULT:
                 // crash_error("Zmiana na katapulte", "nom", NULL, NULL);
                 banked_call(PRG_BANK_CATAPULT_SPRITE, prepare_catapult_movement);
+
+                banked_call(PRG_BANK_CATAPULT_SPRITE, update_catapult_sprite);
                 break;
             case GAME_STATE_SCREEN_SCROLL:
                 // Hide all non-player sprites in play, so we have an empty screen to add new ones to

@@ -1,6 +1,7 @@
 #include "source/c/library/bank_helpers.h"
 #define PRG_BANK_PLAYER_SPRITE 2
 
+ZEROPAGE_EXTERN(int, catapultXPosition);
 ZEROPAGE_EXTERN(int, playerXPosition);
 ZEROPAGE_EXTERN(int, playerYPosition);
 ZEROPAGE_EXTERN(int, playerXVelocity);

@@ -2,10 +2,10 @@
 #define PRG_BANK_CATAPULT_SPRITE 5
 
 // Top-left tile of the sprite of the player facing downward.
-#define PLAYER_SPRITE_TILE_ID 0x00
+#define CATAPULT_SPRITE_TILE_ID 0x08
 
 // The id of the first sprite in the 4 sprites comprising the player. (out of 64 total sprites)
-#define PLAYER_SPRITE_INDEX 0x10
+#define CATAPULT_SPRITE_INDEX 0x18
 
 // This is simple movement style that leaves everything up to the player.
 #define MOVEMENT_STYLE_LOOSE 0
@@ -59,7 +59,7 @@ void prepare_catapult_movement(void);
 void do_catapult_movement(void);
 
 // Update the player's sprite, and put it onto the screen as necessary
-void update_player_sprite(void);
+void update_catapult_sprite(void);
 
 // Tests if the player is about to collide with any solid tiles, and adjusts the player's velocity to zero if found.
 void test_player_tile_collision(void);

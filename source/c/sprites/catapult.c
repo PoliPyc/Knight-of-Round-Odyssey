@@ -19,6 +19,32 @@ CODE_BANK(PRG_BANK_CATAPULT_SPRITE);
 // Huge pile of temporary variables
 #define rawXPosition tempChar1
 #define rawYPosition tempChar2
+#define rawTileId tempChar3
+
+void update_catapult_sprite(void) {
+    // Calculate the position of the player itself, then use these variables to build it up with 4 8x8 NES sprites.
+    rawXPosition = (catapultXPosition >> PLAYER_POSITION_SHIFT);
+    rawYPosition = (playerYPosition >> PLAYER_POSITION_SHIFT);
+    rawTileId = CATAPULT_SPRITE_TILE_ID;
+
+    if (playerXVelocity != 0 || playerYVelocity != 0) {
+        // Does some math with the current NES frame to add either 2 or 0 to the tile id, animating the sprite.
+        rawTileId += ((frameCount >> SPRITE_ANIMATION_SPEED_DIVISOR) & 0x01) << 1;
+    }
+
+    // Clamp the player's sprite X Position to 0 to make sure we don't loop over, even if technically we have.
+    if (rawXPosition > (SCREEN_EDGE_RIGHT + 4)) {
+        rawXPosition = 0;
+    }
+    
+    
+    oam_spr(rawXPosition, rawYPosition, rawTileId, 0x10, CATAPULT_SPRITE_INDEX);
+    oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition, rawTileId + 1, 0x10, CATAPULT_SPRITE_INDEX+4);
+    oam_spr(rawXPosition, rawYPosition + NES_SPRITE_HEIGHT, rawTileId + 16, 0x10, CATAPULT_SPRITE_INDEX+8);
+    oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition + NES_SPRITE_HEIGHT, rawTileId + 17, 0x10, CATAPULT_SPRITE_INDEX+12);
+    
+
+}
 
 void prepare_catapult_movement(void) {
     // Using a variable, so we can change the velocity based on pressing a button, having a special item,
@@ -65,9 +91,9 @@ void prepare_catapult_movement(void) {
     // Now, slowly adjust to the grid as possible, if the player isn't pressing a direction. 
     #if PLAYER_MOVEMENT_STYLE == MOVEMENT_STYLE_GRID
         if (playerYVelocity != 0 && playerXVelocity == 0 && (controllerState & (PAD_LEFT | PAD_RIGHT)) == 0) {
-            if ((char)((playerXPosition + PLAYER_POSITION_TILE_MASK_MIDDLE) & PLAYER_POSITION_TILE_MASK) > (char)(PLAYER_POSITION_TILE_MASK_MIDDLE)) {
+            if ((char)((catapultXPosition + PLAYER_POSITION_TILE_MASK_MIDDLE) & PLAYER_POSITION_TILE_MASK) > (char)(PLAYER_POSITION_TILE_MASK_MIDDLE)) {
                 playerXVelocity = 0-PLAYER_VELOCITY_NUDGE;
-            } else if ((char)((playerXPosition + PLAYER_POSITION_TILE_MASK_MIDDLE) & PLAYER_POSITION_TILE_MASK) < (char)(PLAYER_POSITION_TILE_MASK_MIDDLE)) {
+            } else if ((char)((catapultXPosition + PLAYER_POSITION_TILE_MASK_MIDDLE) & PLAYER_POSITION_TILE_MASK) < (char)(PLAYER_POSITION_TILE_MASK_MIDDLE)) {
                 playerXVelocity = PLAYER_VELOCITY_NUDGE;
             } // If equal, do nothing. That's our goal.
         }
@@ -81,7 +107,7 @@ void prepare_catapult_movement(void) {
         }
     #endif
 
-    nextPlayerXPosition = playerXPosition + playerXVelocity;
+    nextPlayerXPosition = catapultXPosition + playerXVelocity;
     nextPlayerYPosition = playerYPosition + playerYVelocity;
 
 }
@@ -93,18 +119,18 @@ void do_catapult_movement(void) {
     // If the new player position hit any sprites, we'll find that out and knock it out here.
     handle_player_sprite_collision();
 
-    playerXPosition += playerXVelocity;
+    catapultXPosition += playerXVelocity;
     playerYPosition += playerYVelocity;
 
 
-    rawXPosition = (playerXPosition >> PLAYER_POSITION_SHIFT);
+    rawXPosition = (catapultXPosition >> PLAYER_POSITION_SHIFT);
     rawYPosition = (playerYPosition >> PLAYER_POSITION_SHIFT);
     // The X Position has to wrap to allow us to snap to the grid. This makes us shift when you wrap around to 255, down to 240-ish
     if (rawXPosition > (SCREEN_EDGE_RIGHT+4) && rawXPosition < SCREEN_EDGE_LEFT_WRAPPED) {
         // We use sprite direction to determine which direction to scroll in, so be sure this is set properly.
         if (playerInvulnerabilityTime) {
-            playerXPosition -= playerXVelocity;
-            rawXPosition = (playerXPosition >> PLAYER_POSITION_SHIFT);
+            catapultXPosition -= playerXVelocity;
+            rawXPosition = (catapultXPosition >> PLAYER_POSITION_SHIFT);
         } else {
             playerDirection = SPRITE_DIRECTION_LEFT;
             gameState = GAME_STATE_SCREEN_SCROLL;
@@ -112,8 +138,8 @@ void do_catapult_movement(void) {
         }
     } else if (rawXPosition > SCREEN_EDGE_RIGHT && rawXPosition < (SCREEN_EDGE_RIGHT+4)) {
         if (playerInvulnerabilityTime) {
-            playerXPosition -= playerXVelocity;
-            rawXPosition = (playerXPosition >> PLAYER_POSITION_SHIFT);
+            catapultXPosition -= playerXVelocity;
+            rawXPosition = (catapultXPosition >> PLAYER_POSITION_SHIFT);
         } else {
             playerDirection = SPRITE_DIRECTION_RIGHT;
             gameState = GAME_STATE_SCREEN_SCROLL;

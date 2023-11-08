@@ -1,6 +1,7 @@
 #include "source/c/library/bank_helpers.h"
 
 // Some useful global variables
+ZEROPAGE_DEF(int, catapultXPosition);
 ZEROPAGE_DEF(int, playerXPosition);
 ZEROPAGE_DEF(int, playerYPosition);
 ZEROPAGE_DEF(int, playerXVelocity);
