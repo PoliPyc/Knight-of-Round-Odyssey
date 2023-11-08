@@ -38,10 +38,10 @@ void update_catapult_sprite(void) {
     }
     
     
-    oam_spr(rawXPosition, rawYPosition, rawTileId, 0x10, CATAPULT_SPRITE_INDEX);
-    oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition, rawTileId + 1, 0x10, CATAPULT_SPRITE_INDEX+4);
-    oam_spr(rawXPosition, rawYPosition + NES_SPRITE_HEIGHT, rawTileId + 16, 0x10, CATAPULT_SPRITE_INDEX+8);
-    oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition + NES_SPRITE_HEIGHT, rawTileId + 17, 0x10, CATAPULT_SPRITE_INDEX+12);
+    oam_spr(rawXPosition, rawYPosition, rawTileId, 0x08, CATAPULT_SPRITE_INDEX);
+    oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition, rawTileId + 1, 0x08, CATAPULT_SPRITE_INDEX+4);
+    oam_spr(rawXPosition, rawYPosition + NES_SPRITE_HEIGHT, rawTileId + 16, 0x08, CATAPULT_SPRITE_INDEX+8);
+    oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition + NES_SPRITE_HEIGHT, rawTileId + 17, 0x08, CATAPULT_SPRITE_INDEX+12);
     
 
 }
@@ -97,30 +97,17 @@ void prepare_catapult_movement(void) {
                 playerXVelocity = PLAYER_VELOCITY_NUDGE;
             } // If equal, do nothing. That's our goal.
         }
-
-        if (playerXVelocity != 0 && playerYVelocity == 0 && (controllerState & (PAD_UP | PAD_DOWN)) == 0) {
-            if ((char)((playerYPosition + PLAYER_POSITION_TILE_MASK_MIDDLE + PLAYER_POSITION_TILE_MASK_EXTRA_NUDGE) & PLAYER_POSITION_TILE_MASK) > (char)(PLAYER_POSITION_TILE_MASK_MIDDLE)) {
-                playerYVelocity = 0-PLAYER_VELOCITY_NUDGE;
-            } else if ((char)((playerYPosition + PLAYER_POSITION_TILE_MASK_MIDDLE + PLAYER_POSITION_TILE_MASK_EXTRA_NUDGE) & PLAYER_POSITION_TILE_MASK) < (char)(PLAYER_POSITION_TILE_MASK_MIDDLE)) {
-                playerYVelocity = PLAYER_VELOCITY_NUDGE;
-            } // If equal, do nothing. That's our goal.
-        }
     #endif
-
-    nextPlayerXPosition = catapultXPosition + playerXVelocity;
-    nextPlayerYPosition = playerYPosition + playerYVelocity;
-
 }
 
 void do_catapult_movement(void) {
 
     // This will knock out the player's speed if they hit anything.
-    test_player_tile_collision();
+    // test_player_tile_collision();
     // If the new player position hit any sprites, we'll find that out and knock it out here.
-    handle_player_sprite_collision();
+    // handle_player_sprite_collision();
 
     catapultXPosition += playerXVelocity;
-    playerYPosition += playerYVelocity;
 
 
     rawXPosition = (catapultXPosition >> PLAYER_POSITION_SHIFT);
@@ -144,24 +131,6 @@ void do_catapult_movement(void) {
             playerDirection = SPRITE_DIRECTION_RIGHT;
             gameState = GAME_STATE_SCREEN_SCROLL;
             playerOverworldPosition++;
-        }
-    } else if (rawYPosition > SCREEN_EDGE_BOTTOM) {
-        if (playerInvulnerabilityTime) {
-            playerYPosition -= playerYVelocity;
-            rawYPosition = (playerYPosition >> PLAYER_POSITION_SHIFT);
-        } else {
-            playerDirection = SPRITE_DIRECTION_DOWN;
-            gameState = GAME_STATE_SCREEN_SCROLL;
-            playerOverworldPosition += 8;
-        }
-    } else if (rawYPosition < SCREEN_EDGE_TOP) {
-        if (playerInvulnerabilityTime) {
-            playerYPosition -= playerYVelocity;
-            rawYPosition = (playerYPosition >> PLAYER_POSITION_SHIFT);
-        } else {
-            playerDirection = SPRITE_DIRECTION_UP;
-            gameState = GAME_STATE_SCREEN_SCROLL;
-            playerOverworldPosition -= 8;
         }
     }
 }

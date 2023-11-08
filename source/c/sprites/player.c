@@ -121,25 +121,25 @@ void prepare_player_movement(void) {
             }
         }
 
-        if (controllerState & PAD_UP && playerYVelocity <= (0 + PLAYER_VELOCITY_NUDGE)) {
-            if (ABS(playerYVelocity) < maxVelocity) {
-                playerYVelocity -= PLAYER_VELOCITY_ACCEL;
-            } else if (ABS(playerYVelocity) > maxVelocity) {
-                playerYVelocity += PLAYER_VELOCITY_ACCEL;
-            }
-        } else if (controllerState & PAD_DOWN && playerYVelocity >= (0 - PLAYER_VELOCITY_NUDGE)) {
-            if (playerYVelocity < maxVelocity) {
-                playerYVelocity += PLAYER_VELOCITY_ACCEL;
-            } else if (playerYVelocity > maxVelocity) {
-                playerYVelocity -= PLAYER_VELOCITY_ACCEL;
-            }
-        } else { 
-            if (playerYVelocity > 0) {
-                playerYVelocity -= PLAYER_VELOCITY_ACCEL;
-            } else if (playerYVelocity < 0) {
-                playerYVelocity += PLAYER_VELOCITY_ACCEL;
-            }
-        }
+        // if (controllerState & PAD_UP && playerYVelocity <= (0 + PLAYER_VELOCITY_NUDGE)) {
+        //     if (ABS(playerYVelocity) < maxVelocity) {
+        //         playerYVelocity -= PLAYER_VELOCITY_ACCEL;
+        //     } else if (ABS(playerYVelocity) > maxVelocity) {
+        //         playerYVelocity += PLAYER_VELOCITY_ACCEL;
+        //     }
+        // } else if (controllerState & PAD_DOWN && playerYVelocity >= (0 - PLAYER_VELOCITY_NUDGE)) {
+        //     if (playerYVelocity < maxVelocity) {
+        //         playerYVelocity += PLAYER_VELOCITY_ACCEL;
+        //     } else if (playerYVelocity > maxVelocity) {
+        //         playerYVelocity -= PLAYER_VELOCITY_ACCEL;
+        //     }
+        // } else { 
+        //     if (playerYVelocity > 0) {
+        //         playerYVelocity -= PLAYER_VELOCITY_ACCEL;
+        //     } else if (playerYVelocity < 0) {
+        //         playerYVelocity += PLAYER_VELOCITY_ACCEL;
+        //     }
+        // }
         
         // Now, slowly adjust to the grid as possible, if the player isn't pressing a direction. 
         #if PLAYER_MOVEMENT_STYLE == MOVEMENT_STYLE_GRID
@@ -151,13 +151,13 @@ void prepare_player_movement(void) {
                 } // If equal, do nothing. That's our goal.
             }
 
-            if (playerXVelocity != 0 && playerYVelocity == 0 && (controllerState & (PAD_UP | PAD_DOWN)) == 0) {
-                if ((char)((playerYPosition + PLAYER_POSITION_TILE_MASK_MIDDLE + PLAYER_POSITION_TILE_MASK_EXTRA_NUDGE) & PLAYER_POSITION_TILE_MASK) > (char)(PLAYER_POSITION_TILE_MASK_MIDDLE)) {
-                    playerYVelocity = 0-PLAYER_VELOCITY_NUDGE;
-                } else if ((char)((playerYPosition + PLAYER_POSITION_TILE_MASK_MIDDLE + PLAYER_POSITION_TILE_MASK_EXTRA_NUDGE) & PLAYER_POSITION_TILE_MASK) < (char)(PLAYER_POSITION_TILE_MASK_MIDDLE)) {
-                    playerYVelocity = PLAYER_VELOCITY_NUDGE;
-                } // If equal, do nothing. That's our goal.
-            }
+            // if (playerXVelocity != 0 && playerYVelocity == 0 && (controllerState & (PAD_UP | PAD_DOWN)) == 0) {
+            //     if ((char)((playerYPosition + PLAYER_POSITION_TILE_MASK_MIDDLE + PLAYER_POSITION_TILE_MASK_EXTRA_NUDGE) & PLAYER_POSITION_TILE_MASK) > (char)(PLAYER_POSITION_TILE_MASK_MIDDLE)) {
+            //         playerYVelocity = 0-PLAYER_VELOCITY_NUDGE;
+            //     } else if ((char)((playerYPosition + PLAYER_POSITION_TILE_MASK_MIDDLE + PLAYER_POSITION_TILE_MASK_EXTRA_NUDGE) & PLAYER_POSITION_TILE_MASK) < (char)(PLAYER_POSITION_TILE_MASK_MIDDLE)) {
+            //         playerYVelocity = PLAYER_VELOCITY_NUDGE;
+            //     } // If equal, do nothing. That's our goal.
+            // }
         #endif
 
     }
@@ -180,7 +180,7 @@ void do_player_movement(void) {
     handle_player_sprite_collision();
 
     playerXPosition += playerXVelocity;
-    playerYPosition += playerYVelocity;
+    // playerYPosition += playerYVelocity;
 
 
     rawXPosition = (playerXPosition >> PLAYER_POSITION_SHIFT);

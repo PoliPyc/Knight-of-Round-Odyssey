@@ -86,6 +86,9 @@ void main(void) {
                 
                 // Map drawing is complete; let the player play the game!
                 music_play(SONG_OVERWORLD);
+
+                // Init catapult so it is visible right at the start
+                banked_call(PRG_BANK_CATAPULT_SPRITE, update_catapult_sprite);
                 fade_in();
                 gameState = GAME_STATE_BISHOP;
                 break;
@@ -103,6 +106,7 @@ void main(void) {
             case GAME_STATE_CATAPULT:
                 // crash_error("Zmiana na katapulte", "nom", NULL, NULL);
                 banked_call(PRG_BANK_CATAPULT_SPRITE, prepare_catapult_movement);
+                banked_call(PRG_BANK_CATAPULT_SPRITE, do_catapult_movement);
 
                 banked_call(PRG_BANK_CATAPULT_SPRITE, update_catapult_sprite);
                 break;
