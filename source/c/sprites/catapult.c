@@ -37,11 +37,19 @@ void update_catapult_sprite(void) {
         rawXPosition = 0;
     }
     
-    
-    oam_spr(rawXPosition, rawYPosition, rawTileId, 0x08, CATAPULT_SPRITE_INDEX);
-    oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition, rawTileId + 1, 0x08, CATAPULT_SPRITE_INDEX+4);
-    oam_spr(rawXPosition, rawYPosition + NES_SPRITE_HEIGHT, rawTileId + 16, 0x08, CATAPULT_SPRITE_INDEX+8);
-    oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition + NES_SPRITE_HEIGHT, rawTileId + 17, 0x08, CATAPULT_SPRITE_INDEX+12);
+    if (gameState == GAME_STATE_CATAPULT) {
+        oam_spr(rawXPosition, rawYPosition, rawTileId, 0x02, CATAPULT_SPRITE_INDEX);
+        oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition, rawTileId + 1, 0x02, CATAPULT_SPRITE_INDEX+4);
+        oam_spr(rawXPosition, rawYPosition + NES_SPRITE_HEIGHT, rawTileId + 16, 0x02, CATAPULT_SPRITE_INDEX+8);
+        oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition + NES_SPRITE_HEIGHT, rawTileId + 17, 0x02, CATAPULT_SPRITE_INDEX+12);
+    }
+    else {
+        //recolor to grey
+        oam_spr(rawXPosition, rawYPosition, rawTileId, 0x00, CATAPULT_SPRITE_INDEX);
+        oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition, rawTileId + 1, 0x00, CATAPULT_SPRITE_INDEX+4);
+        oam_spr(rawXPosition, rawYPosition + NES_SPRITE_HEIGHT, rawTileId + 16, 0x00, CATAPULT_SPRITE_INDEX+8);
+        oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition + NES_SPRITE_HEIGHT, rawTileId + 17, 0x00, CATAPULT_SPRITE_INDEX+12);
+    }
     
 
 }
@@ -58,7 +66,7 @@ void prepare_catapult_movement(void) {
         gameState = GAME_STATE_PAUSED;
         return;
     }
-    if (controllerState & PAD_SELECT && !(lastControllerState & PAD_START)) {
+    if (controllerState & PAD_SELECT && !(lastControllerState & PAD_SELECT)) {
         gameState = GAME_STATE_BISHOP;
         return;
     }

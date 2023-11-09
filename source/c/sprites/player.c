@@ -60,14 +60,14 @@ void update_player_sprite(void) {
         rawXPosition = 0;
     }
     
-    if (playerInvulnerabilityTime && frameCount & PLAYER_INVULNERABILITY_BLINK_MASK) {
-        // If the player is invulnerable, we hide their sprite about half the time to do a flicker animation.
-        oam_spr(SPRITE_OFFSCREEN, SPRITE_OFFSCREEN, rawTileId, 0x00, PLAYER_SPRITE_INDEX);
-        oam_spr(SPRITE_OFFSCREEN, SPRITE_OFFSCREEN, rawTileId + 1, 0x00, PLAYER_SPRITE_INDEX+4);
-        oam_spr(SPRITE_OFFSCREEN, SPRITE_OFFSCREEN, rawTileId + 16, 0x00, PLAYER_SPRITE_INDEX+8);
-        oam_spr(SPRITE_OFFSCREEN, SPRITE_OFFSCREEN, rawTileId + 17, 0x00, PLAYER_SPRITE_INDEX+12);
+    if (gameState == GAME_STATE_BISHOP) {
+        oam_spr(rawXPosition, rawYPosition, rawTileId, 0x02, PLAYER_SPRITE_INDEX);
+        oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition, rawTileId + 1, 0x02, PLAYER_SPRITE_INDEX+4);
+        oam_spr(rawXPosition, rawYPosition + NES_SPRITE_HEIGHT, rawTileId + 16, 0x02, PLAYER_SPRITE_INDEX+8);
+        oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition + NES_SPRITE_HEIGHT, rawTileId + 17, 0x02, PLAYER_SPRITE_INDEX+12);
 
     } else {
+        //recolor sprite to grey when unused
         oam_spr(rawXPosition, rawYPosition, rawTileId, 0x00, PLAYER_SPRITE_INDEX);
         oam_spr(rawXPosition + NES_SPRITE_WIDTH, rawYPosition, rawTileId + 1, 0x00, PLAYER_SPRITE_INDEX+4);
         oam_spr(rawXPosition, rawYPosition + NES_SPRITE_HEIGHT, rawTileId + 16, 0x00, PLAYER_SPRITE_INDEX+8);
@@ -88,7 +88,7 @@ void prepare_player_movement(void) {
         gameState = GAME_STATE_PAUSED;
         return;
     }
-    if (controllerState & PAD_SELECT && !(lastControllerState & PAD_START)) {
+    if (controllerState & PAD_SELECT && !(lastControllerState & PAD_SELECT)) {
         gameState = GAME_STATE_CATAPULT;
         return;
     }
@@ -120,26 +120,6 @@ void prepare_player_movement(void) {
                 playerXVelocity += PLAYER_VELOCITY_ACCEL;
             }
         }
-
-        // if (controllerState & PAD_UP && playerYVelocity <= (0 + PLAYER_VELOCITY_NUDGE)) {
-        //     if (ABS(playerYVelocity) < maxVelocity) {
-        //         playerYVelocity -= PLAYER_VELOCITY_ACCEL;
-        //     } else if (ABS(playerYVelocity) > maxVelocity) {
-        //         playerYVelocity += PLAYER_VELOCITY_ACCEL;
-        //     }
-        // } else if (controllerState & PAD_DOWN && playerYVelocity >= (0 - PLAYER_VELOCITY_NUDGE)) {
-        //     if (playerYVelocity < maxVelocity) {
-        //         playerYVelocity += PLAYER_VELOCITY_ACCEL;
-        //     } else if (playerYVelocity > maxVelocity) {
-        //         playerYVelocity -= PLAYER_VELOCITY_ACCEL;
-        //     }
-        // } else { 
-        //     if (playerYVelocity > 0) {
-        //         playerYVelocity -= PLAYER_VELOCITY_ACCEL;
-        //     } else if (playerYVelocity < 0) {
-        //         playerYVelocity += PLAYER_VELOCITY_ACCEL;
-        //     }
-        // }
         
         // Now, slowly adjust to the grid as possible, if the player isn't pressing a direction. 
         #if PLAYER_MOVEMENT_STYLE == MOVEMENT_STYLE_GRID
